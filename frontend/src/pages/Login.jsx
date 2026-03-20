@@ -10,6 +10,7 @@ import { auth, provider } from "../utils/Firebase";
 import axios from "axios";
 import { userDataContext } from "../context/UserContext";
 
+
 const Login = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const Login = () => {
         { withCredentials: true },
       );
       console.log(result.data);
+      await getCurrentUser();
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -47,7 +49,7 @@ const Login = () => {
         { withCredentials: true },
       );
       console.log(result.data);
-      getCurrentUser();
+      await getCurrentUser();
       navigate("/");
     } catch (error) {
       console.log("error hai", error);

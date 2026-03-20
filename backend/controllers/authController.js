@@ -32,6 +32,7 @@ export const registration = async (req, res) => {
       httpOnly: true,
       secure: true,
       sameSite: "None",
+      path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return res.status(201).json(user);
@@ -64,6 +65,7 @@ export const login = async (req, res) => {
       httpOnly: true,
       secure: true,
       sameSite: "None",
+      path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return res.status(201).json(user);
@@ -108,6 +110,7 @@ export const googleLogin = async (req, res) => {
       httpOnly: true,
       secure: true, 
       sameSite: "None", 
+      path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 

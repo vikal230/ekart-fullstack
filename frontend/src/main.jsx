@@ -7,6 +7,8 @@ import { BrowserRouter } from "react-router-dom";
 import AuthContext from "./context/AuthContext.jsx";
 import UserContext from "./context/UserContext.jsx";
 import ShopContext from "./context/ShopContext.jsx";
+import axios from "axios";
+axios.defaults.withCredentials = true;
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
