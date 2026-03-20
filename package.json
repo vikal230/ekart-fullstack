@@ -1,7 +1,8 @@
 {
- "scripts": {
+"scripts": {
+  "start": "cd backend && node index.js",
   "dev": "concurrently \"cd backend && nodemon index.js\" \"cd frontend && npm run dev\" \"cd admin && npm run dev\""
- },
+},
  "dependencies": {
   "cloudinary": "^2.9.0",
   "concurrently": "^9.2.1",
