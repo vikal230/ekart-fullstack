@@ -4,7 +4,7 @@ import google from "../assets/googlelogo.jpg";
 import { useNavigate } from "react-router-dom";
 import { IoEyeOutline, IoEyeSharp } from "react-icons/io5";
 import { useContext } from "react";
-import { authDataContext } from "../context/authcontext";
+import { authDataContext } from "../context/AuthContext";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/Firebase";
 import axios from "axios";

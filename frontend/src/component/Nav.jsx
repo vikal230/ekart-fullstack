@@ -7,7 +7,7 @@ import { userDataContext } from "../context/UserContext";
 import { FaSearchPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { authDataContext } from "../context/authcontext";
+import { authDataContext } from "../context/AuthContext";
 import { FaHome } from "react-icons/fa";
 import { BsFillCollectionFill } from "react-icons/bs";
 import { MdContactPhone } from "react-icons/md";
