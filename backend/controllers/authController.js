@@ -2,8 +2,7 @@ import User from "../model/userModel.js";
 import validator from "validator";
 import bcrypt from "bcryptjs";
 import { genToken, genToken1 } from "../config/token.js";
-import nodemailer from "nodemailer";
-
+// import nodemailer from "nodemailer";
 
 export const registration = async (req, res) => {
   try {
@@ -20,15 +19,19 @@ export const registration = async (req, res) => {
     }
 
     let hashPassword = await bcrypt.hash(password, 10);
-const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
     const user = await User.create({ name, email, password: hashPassword });
     let token = await genToken(user._id);
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   secure: false,
+    //   sameSite: "Strict",
+    //   maxAge: 7 * 24 * 60 * 60 * 1000,
+    // });
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      secure: false,
-      sameSite: "Strict",
-      verificationCode,
+      secure: true,
+      sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return res.status(201).json(user);
@@ -50,11 +53,17 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "incorrect passwors!" });
     }
     let token = await genToken(user._id);
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   secure: false,
+    //   sameSite: "Strict",
+    //   maxAge: 7 * 24 * 60 * 60 * 1000,
+    // });
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      secure: false,
-      sameSite: "Strict",
+      secure: true,
+      sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return res.status(201).json(user);
@@ -88,10 +97,17 @@ export const googleLogin = async (req, res) => {
     }
 
     let token = await genToken(user._id);
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: "Strict",
+    //   maxAge: 7 * 24 * 60 * 60 * 1000,
+    // });
+
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+      secure: true, 
+      sameSite: "None", 
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -103,7 +119,6 @@ export const googleLogin = async (req, res) => {
       .json({ message: "Google Login failed", error: error.message });
   }
 };
-
 
 export const adminLogin = async (req, res) => {
   try {
@@ -122,8 +137,8 @@ export const adminLogin = async (req, res) => {
 
       return res.status(201).json(token);
     }
-    return res.status(404).send({message: "error aa gya hai!"})
+    return res.status(404).send({ message: "error aa gya hai!" });
   } catch (error) {
-   console.log("Admin login ke ander error aa gya hai!", error)
+    console.log("Admin login ke ander error aa gya hai!", error);
   }
 };
