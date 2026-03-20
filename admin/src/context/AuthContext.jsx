@@ -2,7 +2,7 @@ import React, { createContext } from "react";
 
 export const authDataContext = createContext();
 const AuthContext = ({ children }) => {
-  let serverUrl = "http://localhost:3000";
+  let serverUrl = "https://ekart-fullstack-l0vz.onrender.com";
   let value = {
     serverUrl,
   };
