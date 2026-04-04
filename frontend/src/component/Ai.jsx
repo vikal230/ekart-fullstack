@@ -87,8 +87,8 @@ const Ai = () => {
   };
   return (
     <div
-      className="fixed lg:bottom-[20px] md:bottom-[40px] bottom-[80px] left-[2%]"
-      onClick={(e) => recognition.start()}
+      className="fixed lg:bottom-[20px] md:bottom-[40px] bottom-[80px] left-[2%] justify-start items-end flex cursor-pointer"
+      onClick={(e) => recognition.start(e)}
     >
       <img
         src={ai}

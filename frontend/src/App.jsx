@@ -18,8 +18,34 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
-  let { userData } = useContext(userDataContext);
+  let { userData, isCheckingAuth } = useContext(userDataContext);
   let location = useLocation();
+
+  if (isCheckingAuth) {
+    return (
+      <>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
+        <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-gray-50">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-12 h-12 rounded-full border-4 border-gray-200 border-t-gray-900 animate-spin"></div>
+            <p className="text-sm font-medium text-gray-600">Loading your Pages...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <ToastContainer

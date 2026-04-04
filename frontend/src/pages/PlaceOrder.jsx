@@ -38,7 +38,7 @@ const PlaceOrder = () => {
 
   const initPay = (order) => {
     const options = {
-      key: "rzp_test_SGgT5MNowjIvSh",
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: order.amount,
       currency: order.currency,
       name: "Order Payment",
@@ -122,7 +122,7 @@ const PlaceOrder = () => {
   };
 
   return (
-    <div className="w-[100vw] min-h-[100vh] bg-gray-50 flex items-start justify-center flex-col md:flex-row gap-[50px] relative px-4 md:px-10 pb-20 mt-[80px]">
+    <div className="w-[100vw] min-h-[100vh] bg-gray-50 flex items-start justify-center flex-col md:flex-row gap-[50px] relative px-4 md:px-10 pb-20 mt-18">
       
       {/* Left Column: Form */}
       <div className="lg:w-[50%] w-[100%] h-auto flex flex-col items-center justify-start lg:mt-[0px] mt-10">

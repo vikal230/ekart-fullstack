@@ -43,78 +43,96 @@ const Cart = () => {
   }, [cartItem, products]);
 
   return (
-    <div className="w-full min-h-[100vh] p-[20px] overflow-hidden bg-gray-50">
-      <div className="h-[8%] w-[100%] text-center mt-[80px]">
+    <div className="w-full min-h-[100vh] p-[20px] bg-gray-50 mt-18">
+      
+      {/* Title Section */}
+      <div className="w-full text-center mt-[40px] mb-[40px]">
         <Title text1={"YOUR"} text2={"CART"} />
       </div>
-      <div className="w-[100%] h-[92%] flex flex-wrap gap-[20px]">
+
+      {/* Cart Items List */}
+      <div className="w-full flex flex-col gap-[20px]">
         {cartData.map((item, index) => {
           let productData = products.find(
             (product) => product._id === item._id,
           );
           return (
-            <div key={index} className="w-[100%] py-4 border-t border-b border-gray-200">
-              <div className="w-[100%] flex items-start gap-6 bg-white shadow-sm py-[15px] px-[20px] rounded-xl relative border border-gray-100">
-                <img
-                  className="w-[100px] h-[100px] rounded-md object-contain border border-gray-200 bg-gray-100 p-1"
-                  src={productData.image3}
-                  alt={productData.name}
-                />
-                <div className="flex items-start justify-center flex-col gap-[10px]">
-                  <p className="md:text-[22px] text-[18px] text-gray-900 font-medium">
-                    {productData.name}
-                  </p>
-                  <div className="flex items-center gap-[20px]">
-                    <p className="text-[18px] text-gray-700 font-semibold">
-                      {currency} {productData.price}
+            <div key={index} className="w-full">
+              
+              {/* Main Item Container - Changed for Responsiveness */}
+              <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white shadow-sm py-[15px] px-[20px] rounded-xl border border-gray-100">
+                
+                {/* Product Image & Info Group */}
+                <div className="flex items-center gap-4 w-full sm:w-auto">
+                  <img
+                    className="w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] rounded-md object-contain border border-gray-200 bg-gray-100 p-1"
+                    src={productData.image1}
+                    alt={productData.name}
+                  />
+                  <div className="flex flex-col gap-2">
+                    <p className="text-[16px] sm:text-[20px] text-gray-900 font-medium leading-tight">
+                      {productData.name}
                     </p>
-                    <p className="w-[40px] h-[40px] text-[16px] text-gray-700 bg-gray-50 rounded-md mt-[5px] flex items-center justify-center border-[1px] border-gray-300">
-                      {item.size}
-                    </p>
+                    <div className="flex items-center gap-4">
+                      <p className="text-[16px] sm:text-[18px] text-gray-700 font-semibold">
+                        {currency} {productData.price}
+                      </p>
+                      <p className="px-3 py-1 text-[14px] text-gray-700 bg-gray-50 rounded-md border border-gray-300">
+                        {item.size}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="absolute md:top-[40%] top-[46%] left-[65%] md:left-[50%] flex items-center gap-3 bg-white border-[1px] border-gray-300 rounded-md px-2 py-1 shadow-sm">
-                  <button
-                    onClick={() =>
-                      item.quantity > 1 &&
-                      updateQuantity(item._id, item.size, item.quantity - 1)
-                    }
-                    className="text-gray-500 text-[22px] font-bold px-2 hover:text-black transition-colors"
-                  >
-                    -
-                  </button>
+                {/* Quantity Controls & Delete Icon Group */}
+                <div className="flex items-center justify-between w-full sm:w-auto mt-2 sm:mt-0 pt-4 sm:pt-0 border-t sm:border-none border-gray-100 gap-6">
+                  
+                  {/* Quantity Buttons */}
+                  <div className="flex items-center gap-3 bg-white border border-gray-300 rounded-md px-2 py-1 shadow-sm">
+                    <button
+                      onClick={() =>
+                        item.quantity > 1 &&
+                        updateQuantity(item._id, item.size, item.quantity - 1)
+                      }
+                      className="text-gray-500 text-[20px] font-bold px-2 hover:text-black transition-colors"
+                    >
+                      -
+                    </button>
 
-                  <span className="text-gray-900 text-[18px] font-semibold w-[20px] text-center">
-                    {item.quantity}
-                  </span>
+                    <span className="text-gray-900 text-[16px] font-semibold w-[20px] text-center">
+                      {item.quantity}
+                    </span>
 
-                  <button
-                    onClick={() =>
-                      updateQuantity(item._id, item.size, item.quantity + 1)
-                    }
-                    className="text-gray-500 text-[20px] font-bold px-2 hover:text-black transition-colors"
-                  >
-                    +
-                  </button>
+                    <button
+                      onClick={() =>
+                        updateQuantity(item._id, item.size, item.quantity + 1)
+                      }
+                      className="text-gray-500 text-[20px] font-bold px-2 hover:text-black transition-colors"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  {/* Delete Icon */}
+                  <AiTwotoneDelete
+                    className="text-gray-400 hover:text-red-500 cursor-pointer w-[24px] h-[24px] transition-colors"
+                    onClick={() => updateQuantity(item._id, item.size, 0)}
+                  />
                 </div>
 
-                <AiTwotoneDelete
-                  className="text-gray-400 hover:text-red-500 cursor-pointer w-[25px] h-[25px] absolute top-[50%] md:top-[40%] md:right-[5%] right-4 transition-colors"
-                  onClick={() => updateQuantity(item._id, item.size, 0)}
-                />
               </div>
             </div>
           );
         })}
       </div>
 
+      {/* Cart Totals Section */}
       {cartData.length > 0 ? (
-        <div className="flex justify-start items-end my-20">
+        <div className="flex justify-start items-start my-10">
           <div className="w-full sm:w-[450px]">
             <CartTotal />
             <button
-              className="text-[16px] font-medium hover:bg-black cursor-pointer bg-gray-900 py-[12px] px-[40px] rounded-xl text-white flex items-center justify-center gap-[20px] shadow-sm ml-[30px] mt-[20px] transition-all"
+              className="w-full sm:w-auto text-[16px] font-medium hover:bg-black cursor-pointer bg-gray-900 py-[12px] px-[40px] rounded-xl text-white flex items-center justify-center gap-[20px] shadow-sm sm:ml-[30px] mt-[20px] transition-all"
               onClick={() => navigate("/placeorder")}
             >
               PROCEED TO CHECKOUT

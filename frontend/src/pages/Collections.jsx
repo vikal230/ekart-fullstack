@@ -81,9 +81,9 @@ const Collections = () => {
   }, [sortType]);
 
   return (
-    <div className="w-full min-h-[100vh] bg-gray-50 flex items-start flex-col md:flex-row justify-start overflow-x-hidden z-[2] mt-18">
+    <div className="w-full min-h-[100vh] bg-gray-50 flex items-start flex-col md:flex-row justify-start overflow-x-hidden z-[2] mt-18 mb-35">
       <div
-        className={`md:w-[30vw] lg:w-[20vw] w-[100vw] md:min-h-[100vh] ${showfilter ? "h-[45vh]" : "h[8vh]"} p-[20px] bg-white shadow-sm border-r-[1px] border-gray-200 text-gray-900`}
+        className={`md:w-[30vw] lg:w-[20vw] w-[100vw] md:min-h-[100vh] ${showfilter ? "h-[65vh]" : "h[8vh]"} p-[20px] bg-white shadow-sm border-r-[1px] border-gray-200 text-gray-900`}
       >
         <p
           className="text-[25px] font-semibold flex gap-[5px] items-center justify-start cursor-pointer"

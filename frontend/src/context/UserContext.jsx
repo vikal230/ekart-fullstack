@@ -8,9 +8,11 @@ export const userDataContext = createContext();
 
 const UserContext =  ({ children }) => {
   let [userData, setUserData] = useState("");
+  let [isCheckingAuth, setIsCheckingAuth] = useState(true);
   let { serverUrl } = useContext(authDataContext);
 
   const getCurrentUser = async () => {
+    setIsCheckingAuth(true);
     try {
       let result = await axios.post(serverUrl + "/api/user/getCurrentUser", {}, {
         withCredentials: true,
@@ -20,6 +22,8 @@ const UserContext =  ({ children }) => {
     } catch (error) {
       setUserData(null);
       console.log("error hai!", error)
+    } finally {
+      setIsCheckingAuth(false);
     }
   };
 
@@ -31,6 +35,7 @@ const UserContext =  ({ children }) => {
     userData,
     setUserData,
     getCurrentUser,
+    isCheckingAuth,
   };
   return (
     <userDataContext.Provider value={value}>
