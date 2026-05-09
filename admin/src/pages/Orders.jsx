@@ -135,6 +135,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import { SiEbox } from "react-icons/si";
+import { toast } from "react-toastify";
 
 const Orders = () => {
   let [orders, setOrders] = useState([]);
@@ -167,9 +168,11 @@ const Orders = () => {
       );
       if (result.data) {
         await fetchAllOrders();
+        toast.success("Order status updated");
       }
     } catch (error) {
       console.log(error);
+      toast.error("Failed to update order status");
     }
   };
 
@@ -190,8 +193,11 @@ const Orders = () => {
 
           {/* Loading Animation Logic */}
           {isLoading ? (
-            <div className="w-full flex justify-center items-center h-[40vh]">
-              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-gray-900"></div>
+            <div className="w-full h-[40vh] flex flex-col items-center justify-center gap-4">
+              <div className="animate-spin rounded-full h-14 w-14 border-4 border-gray-300 border-t-gray-900"></div>
+              <p className="text-gray-500 text-lg font-medium">
+                Loading orders...
+              </p>
             </div>
           ) : (
             orders.map((order, index) => (

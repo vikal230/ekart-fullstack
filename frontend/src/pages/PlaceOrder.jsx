@@ -8,6 +8,7 @@ import { shopDataContext } from "../context/ShopContext";
 import { authDataContext } from "../context/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const PlaceOrder = () => {
   const { cartItem, products, delivery_fee, getCartAmount, setCartItem } =
@@ -53,12 +54,18 @@ const PlaceOrder = () => {
           { withCredentials: true },
         );
         if(data) {
+          toast.success("Payment successful");
           navigate("/order")
           setCartItem({})
+        } else {
+          toast.error("Payment verification failed");
         }
       },
     };
     const rzp = new window.Razorpay(options);
+    rzp.on("payment.failed", () => {
+      toast.error("Payment failed");
+    });
     rzp.open();
   };
 
@@ -87,6 +94,11 @@ const PlaceOrder = () => {
         amount: getCartAmount() + delivery_fee,
       };
       console.log(orderData);
+      if (orderItems.length === 0) {
+        toast.error("Your cart is empty");
+        return;
+      }
+      toast.info("Placing your order");
       switch (method) {
         case "cod":
           const result = await axios.post(
@@ -97,9 +109,11 @@ const PlaceOrder = () => {
           console.log(result.data);
           if (result.data) {
             setCartItem({});
+            toast.success("Order placed with cash on delivery");
             navigate("/order");
           } else {
             console.log(result.data.message);
+            toast.error("Cash on delivery failed");
           }
           break;
 
@@ -113,11 +127,13 @@ const PlaceOrder = () => {
             initPay(resultRazorpay.data);
           } else {
             console.log(resultRazorpay.data.message);
+            toast.error("Unable to start payment");
           }
           break;
       }
     } catch (error) {
       console.log(error);
+      toast.error("Order failed");
     }
   };
 

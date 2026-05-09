@@ -9,6 +9,7 @@ import axios from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/Firebase";
 import { userDataContext } from "../context/UserContext";
+import { toast } from "react-toastify";
 
 const Registration = () => {
   const [show, setShow] = useState(false);
@@ -29,10 +30,12 @@ const Registration = () => {
       );
       console.log(result.data);
       getCurrentUser()
+      toast.success("Account created successfully");
       navigate("/");
       
     } catch (error) {
       console.log(error);
+      toast.error("Registration failed");
     }
   };
 
@@ -50,9 +53,11 @@ const Registration = () => {
       );
       console.log(result.data);
       getCurrentUser();
+      toast.success("Google signup successful");
       navigate("/");
     } catch (error) {
       console.log("error hai", error);
+      toast.error("Google signup failed");
     }
   };
 

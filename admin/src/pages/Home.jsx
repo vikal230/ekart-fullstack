@@ -10,6 +10,8 @@ import axios from "axios"
 const Home = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalOrders, setTotalOrders] = useState(0);
+  const [showProducts, setShowProducts] = useState(0);
+  const [showOrders, setShowOrders] = useState(0);
   const { serverUrl } = useContext(authDataContext);
 
   const fetchCounts = async () => {
@@ -36,6 +38,34 @@ const Home = () => {
     fetchCounts();
   }, []);
 
+  useEffect(() => {
+    let current = 0;
+    const timer = setInterval(() => {
+      current += 1;
+      if (current >= totalProducts) {
+        current = totalProducts;
+        clearInterval(timer);
+      }
+      setShowProducts(current);
+    }, 40);
+
+    return () => clearInterval(timer);
+  }, [totalProducts]);
+
+  useEffect(() => {
+    let current = 0;
+    const timer = setInterval(() => {
+      current += 1;
+      if (current >= totalOrders) {
+        current = totalOrders;
+        clearInterval(timer);
+      }
+      setShowOrders(current);
+    }, 40);
+
+    return () => clearInterval(timer);
+  }, [totalOrders]);
+
   return (
     <div className="w-[100vw] min-h-[100vh] bg-gray-50 text-gray-800 relative overflow-x-hidden">
       <Nav />
@@ -56,7 +86,7 @@ const Home = () => {
           <div className="bg-white w-full md:w-[350px] h-[180px] flex items-center justify-center flex-col gap-[15px] rounded-xl shadow-sm border border-gray-200 transition-hover hover:shadow-md">
             <p className="text-gray-500 font-semibold text-[16px] md:text-[18px] uppercase tracking-wider">Total Products</p>
             <span className="text-[35px] md:text-[45px] font-bold text-gray-900">
-                {totalProducts}
+                {showProducts}
             </span>
             <div className="w-[40px] h-[4px] bg-sky-600 rounded-full"></div>
           </div>
@@ -65,7 +95,7 @@ const Home = () => {
           <div className="bg-white w-full md:w-[350px] h-[180px] flex items-center justify-center flex-col gap-[15px] rounded-xl shadow-sm border border-gray-200 transition-hover hover:shadow-md">
             <p className="text-gray-500 font-semibold text-[16px] md:text-[18px] uppercase tracking-wider">Total Orders</p>
             <span className="text-[35px] md:text-[45px] font-bold text-gray-900">
-                {totalOrders}
+                {showOrders}
             </span>
             <div className="w-[40px] h-[4px] bg-yellow-500 rounded-full"></div>
           </div>

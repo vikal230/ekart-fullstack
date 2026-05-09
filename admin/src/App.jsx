@@ -6,13 +6,25 @@ import Lists from "./pages/Lists";
 import Login from "./pages/Login";
 import Orders from "./pages/Orders";
 import { adminDataContext } from "./context/AdminContext";
- import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   let { admindata } = useContext(adminDataContext);
   return (
     <>
-    <ToastContainer/>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        toastStyle={{ background: "#111827", color: "#fff" }}
+      />
       {!admindata ? (
         <Login />
       ) : (

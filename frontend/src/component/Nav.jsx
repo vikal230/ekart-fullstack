@@ -5,13 +5,14 @@ import { CgProfile } from "react-icons/cg";
 import { MdShoppingCart } from "react-icons/md";
 import { userDataContext } from "../context/UserContext";
 import { FaSearchPlus } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { authDataContext } from "../context/AuthContext";
 import { FaHome } from "react-icons/fa";
 import { BsFillCollectionFill } from "react-icons/bs";
 import { MdContactPhone } from "react-icons/md";
 import { shopDataContext } from "../context/ShopContext";
+import { toast } from "react-toastify";
 const Nav = () => {
   let { userData, setUserData } = useContext(userDataContext);
   let { showSearch, setShowSearch, search, setSearch, getCartCount } =
@@ -19,6 +20,7 @@ const Nav = () => {
   let [showProfile, setShowProfile] = useState(false);
   let { serverUrl } = useContext(authDataContext);
   let navigate = useNavigate();
+  let location = useLocation();
 
   const handleLogout = async () => {
     try {
@@ -32,8 +34,10 @@ const Nav = () => {
       console.log(result.data);
       navigate("/login");
       setUserData(null);
+      toast.success("Logged out successfully");
     } catch (error) {
       console.log("logout kerne me error aa rha hai!", error);
+      toast.error("Logout failed");
     }
   };
   return (
@@ -47,25 +51,25 @@ const Nav = () => {
       <div className="w-[55%] lg:w-[40%] hidden md:flex">
         <ul className="flex items-center justify-center gap-[15px]">
           <li
-            className="text-[15px] hover:bg-slate-300 cursor-pointer font-medium py-[10px] px-[20px] rounded-md"
+            className={`text-[15px] cursor-pointer font-medium py-[10px] px-[20px] rounded-md ${location.pathname === "/" ? "bg-slate-300" : "hover:bg-slate-300"}`}
             onClick={() => navigate("/")}
           >
             HOME
           </li>
           <li
-            className="text-[15px] hover:bg-slate-300 cursor-pointer font-medium py-[10px] px-[20px] rounded-md"
+            className={`text-[15px] cursor-pointer font-medium py-[10px] px-[20px] rounded-md ${location.pathname === "/collections" ? "bg-slate-300" : "hover:bg-slate-300"}`}
             onClick={() => navigate("/collections")}
           >
             COLLECTIONS
           </li>
           <li
-            className="text-[15px] hover:bg-slate-300 cursor-pointer font-medium py-[10px] px-[20px] rounded-md"
+            className={`text-[15px] cursor-pointer font-medium py-[10px] px-[20px] rounded-md ${location.pathname === "/about" ? "bg-slate-300" : "hover:bg-slate-300"}`}
             onClick={() => navigate("/about")}
           >
             ABOUT
           </li>
           <li
-            className="text-[15px] hover:bg-slate-300 cursor-pointer font-medium py-[10px] px-[20px] rounded-md"
+            className={`text-[15px] cursor-pointer font-medium py-[10px] px-[20px] rounded-md ${location.pathname === "/contact" ? "bg-slate-300" : "hover:bg-slate-300"}`}
             onClick={() => navigate("/contact")}
           >
             CONTACT
@@ -107,7 +111,7 @@ const Nav = () => {
         )}
 
         <MdShoppingCart
-          className="w-[32px] h-[32px] text-[#000000] cursor-pointer text-gray-500 hidden md:block"
+          className={`w-[32px] h-[32px] cursor-pointer hidden md:block ${location.pathname === "/cart" ? "text-black bg-slate-300 rounded-md p-[3px]" : "text-gray-500"}`}
           onClick={() => navigate("/cart")}
         />
         <p className="absolute w-[18px] h-[18px] items-center justify-center px-[7px] py-[2px] bg-black text-white rounded-full text-[9px] top-[11px] right-[25px] hidden md:block">
@@ -167,28 +171,28 @@ const Nav = () => {
         </div>
       )}
       <div className="w-[100vw] h-[90px] flex items-center justify-between px-[25px] fixed bottom-0 left-0 bg-gray-200 md:hidden">
-        <button className="text-black flex items-center justify-center flex-col gap-[2px] cursor-pointer">
+        <button className={`text-black flex items-center justify-center flex-col gap-[2px] cursor-pointer px-[8px] py-[4px] rounded-md ${location.pathname === "/" ? "bg-slate-300" : ""}`}>
           <FaHome
             className="w-[30px] h-[30px] text-[black] md:hidden cursor-pointer"
             onClick={() => navigate("/")}
           />
           Home
         </button>
-        <button className="text-black flex items-center justify-center flex-col gap-[2px] cursor-pointer">
+        <button className={`text-black flex items-center justify-center flex-col gap-[2px] cursor-pointer px-[8px] py-[4px] rounded-md ${location.pathname === "/collections" ? "bg-slate-300" : ""}`}>
           <BsFillCollectionFill
             className="w-[30px] h-[30px] text-black md:hidden cursor-pointer"
             onClick={() => navigate("/collections")}
           />
           Collection
         </button>
-        <button className="text-black flex items-center justify-center flex-col gap-[2px] cursor-pointer">
+        <button className={`text-black flex items-center justify-center flex-col gap-[2px] cursor-pointer px-[8px] py-[4px] rounded-md ${location.pathname === "/contact" ? "bg-slate-300" : ""}`}>
           <MdContactPhone
             className="w-[30px] h-[30px] text-black md:hidden cursor-pointer"
             onClick={() => navigate("/contact")}
           />
           Contact
         </button>
-        <button className="text-black flex items-center justify-center flex-col gap-[2px] cursor-pointer">
+        <button className={`text-black flex items-center justify-center flex-col gap-[2px] cursor-pointer px-[8px] py-[4px] rounded-md ${location.pathname === "/cart" ? "bg-slate-300" : ""}`}>
           <MdShoppingCart
             className="w-[30px] h-[30px] text-black md:hidden cursor-pointer"
             onClick={() => navigate("/cart")}

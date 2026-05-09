@@ -4,6 +4,7 @@ import Logo from "../assets/logo.png";
 import axios from "axios"
 import { authDataContext } from "../context/AuthContext";
 import { adminDataContext } from "../context/AdminContext";
+import { toast } from "react-toastify";
 const Nav = () => {
   let navigate = useNavigate();
   let {serverUrl} = useContext(authDataContext)
@@ -13,9 +14,11 @@ const Nav = () => {
       let result = await axios.post(serverUrl + "/api/auth/logout",  {withCredentials: true})
       console.log(result.data)
       getAdmin()
+      toast.success("Admin logged out successfully");
       navigate("/login")
     } catch (error) {
       console.log("admin logout error!", error)
+      toast.error("Admin logout failed");
     }
   }
   return (

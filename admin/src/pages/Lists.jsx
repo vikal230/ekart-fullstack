@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { authDataContext } from "../context/AuthContext";
 import { useEffect } from "react";
 import axios from "axios"
+import { toast } from "react-toastify";
 
 const Lists = () => {
   let [list, setList] = useState([]);
@@ -30,11 +31,14 @@ const Lists = () => {
 
       if (result.data) {
         fetchList();
+        toast.success("Product removed successfully");
       } else {
         console.log("fail to remove product!");
+        toast.error("Failed to remove product");
       }
     } catch (error) {
       console.log(error);
+      toast.error("Failed to remove product");
     }
   };
 
@@ -88,14 +92,10 @@ const Lists = () => {
               </div>
             ))
           ) : (
-            // No Products Empty State
-            <div className="w-full h-[50vh] flex flex-col items-center justify-center gap-6">
-              <div className="relative flex items-center justify-center">
-                <div className="w-24 h-24 border-4 border-dashed border-gray-300 rounded-full animate-spin"></div>
-                <div className="absolute w-12 h-12 bg-gray-200 rounded animate-pulse"></div>
-              </div>
-              <p className="text-gray-400 text-xl font-medium tracking-wide">
-                NO PRODUCTS FOUND
+            <div className="w-full h-[50vh] flex flex-col items-center justify-center gap-4">
+              <div className="animate-spin rounded-full h-14 w-14 border-4 border-gray-300 border-t-gray-900"></div>
+              <p className="text-gray-500 text-lg font-medium">
+                Loading items...
               </p>
             </div>
           )}

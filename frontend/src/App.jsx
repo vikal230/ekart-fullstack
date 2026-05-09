@@ -20,12 +20,15 @@ import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   let { userData, isCheckingAuth } = useContext(userDataContext);
   let location = useLocation();
+  const isPublicPage = ["/login", "/signup"].includes(
+    location.pathname.toLowerCase(),
+  );
 
-  if (isCheckingAuth) {
+  if (isCheckingAuth && !isPublicPage) {
     return (
       <>
         <ToastContainer
-          position="top-right"
+          position="bottom-right"
           autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
@@ -35,6 +38,7 @@ const App = () => {
           draggable
           pauseOnHover
           theme="colored"
+          toastStyle={{ background: "#111827", color: "#fff" }}
         />
         <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-gray-50">
           <div className="flex flex-col items-center gap-4">
@@ -49,7 +53,7 @@ const App = () => {
   return (
     <>
       <ToastContainer
-        position="top-right"
+        position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -59,6 +63,7 @@ const App = () => {
         draggable
         pauseOnHover
         theme="colored"
+        toastStyle={{ background: "#111827", color: "#fff" }}
       />
       {userData && <Nav />}
       <Routes>

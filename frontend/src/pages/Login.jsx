@@ -9,6 +9,7 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/Firebase";
 import axios from "axios";
 import { userDataContext } from "../context/UserContext";
+import { toast } from "react-toastify";
 
 
 const Login = () => {
@@ -30,9 +31,11 @@ const Login = () => {
       );
       console.log(result.data);
       await getCurrentUser();
+      toast.success("Welcome back to ekart");
       navigate("/");
     } catch (error) {
       console.log(error);
+      toast.error("Login failed");
     }
   };
 
@@ -50,9 +53,11 @@ const Login = () => {
       );
       console.log(result.data);
       await getCurrentUser();
+      toast.success("Google login successful");
       navigate("/");
     } catch (error) {
       console.log("error hai", error);
+      toast.error("Google login failed");
     }
   };
 

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { authDataContext } from "./AuthContext";
 import axios from "axios";
 import { userDataContext } from "./UserContext";
+import { toast } from "react-toastify";
 export const shopDataContext = createContext();
 
 const ShopContext = ({ children }) => {
@@ -27,6 +28,7 @@ const ShopContext = ({ children }) => {
   const addToCart = async (itemId, size) => {
     if (!size) {
       console.log("select product size");
+      toast.error("Select product size");
       return;
     }
 
@@ -58,9 +60,13 @@ const ShopContext = ({ children }) => {
         );
 
         console.log("add to cart result", result);
+        toast.success("Item added to bag");
       } catch (error) {
         console.log("error in shop context addToCart", error);
+        toast.error("Unable to add item");
       }
+    } else {
+      toast.success("Item added to bag");
     }
   };
 
@@ -99,6 +105,11 @@ const ShopContext = ({ children }) => {
         },
       );
       console.log("update quantity result", result);
+      if (quantity === 0) {
+        toast.success("Item removed from bag");
+      } else {
+        toast.success("Cart updated");
+      }
     } catch (error) {
       console.log("error in update quantity", error);
       toast.error("Error updating cart item quantity");
