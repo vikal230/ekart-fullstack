@@ -21,14 +21,19 @@ const App = () => {
   let { userData, isCheckingAuth } = useContext(userDataContext);
   let location = useLocation();
   const pathName = location.pathname.toLowerCase();
+  const isPublicPage = ["/login", "/signup"].includes(pathName);
   const loadingTextMap = {
     "/login": "Loading Login...",
     "/signup": "Loading Sign Up...",
     "/": "Loading Home...",
   };
-  const loadingText = pathName.startsWith("/productdetails/")
-    ? "Loading Product Details..."
-    : loadingTextMap[pathName] || "Loading Page...";
+  const loadingText = isPublicPage
+    ? loadingTextMap[pathName]
+    : !userData && pathName === "/"
+      ? "Loading Login..."
+      : pathName.startsWith("/productdetails/")
+        ? "Loading Product Details..."
+        : loadingTextMap[pathName] || "Loading Page...";
 
   if (isCheckingAuth) {
     return (
