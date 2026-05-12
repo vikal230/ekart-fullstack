@@ -20,11 +20,17 @@ import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   let { userData, isCheckingAuth } = useContext(userDataContext);
   let location = useLocation();
-  const isPublicPage = ["/login", "/signup"].includes(
-    location.pathname.toLowerCase(),
-  );
+  const pathName = location.pathname.toLowerCase();
+  const loadingTextMap = {
+    "/login": "Loading Login...",
+    "/signup": "Loading Sign Up...",
+    "/": "Loading Home...",
+  };
+  const loadingText = pathName.startsWith("/productdetails/")
+    ? "Loading Product Details..."
+    : loadingTextMap[pathName] || "Loading Page...";
 
-  if (isCheckingAuth && !isPublicPage) {
+  if (isCheckingAuth) {
     return (
       <>
         <ToastContainer
@@ -43,7 +49,7 @@ const App = () => {
         <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-gray-50">
           <div className="flex flex-col items-center gap-4">
             <div className="w-12 h-12 rounded-full border-4 border-gray-200 border-t-gray-900 animate-spin"></div>
-            <p className="text-sm font-medium text-gray-600">Loading your Pages...</p>
+            <p className="text-sm font-medium text-gray-600">{loadingText}</p>
           </div>
         </div>
       </>
