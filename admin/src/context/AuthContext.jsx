@@ -2,7 +2,12 @@ import React, { createContext } from "react";
 
 export const authDataContext = createContext();
 const AuthContext = ({ children }) => {
-  let serverUrl = "https://ekart-fullstack-l0vz.onrender.com";
+  const isLocalhost =
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1";
+  const serverUrl = isLocalhost
+    ? "http://localhost:3000"
+    : import.meta.env.VITE_API_URL || "https://ekart-fullstack-l0vz.onrender.com";
   let value = {
     serverUrl,
   };

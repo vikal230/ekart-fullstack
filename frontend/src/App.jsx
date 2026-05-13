@@ -13,7 +13,7 @@ import Cart from "./pages/Cart";
 import PlaceOrder from "./pages/PlaceOrder";
 import Order from "./pages/Order";
 import PageNotFound from "./pages/pageNotFound";
-import Ai from "./component/Ai";
+import AiAssistantButton from "./component/AiAssistantButton";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -183,7 +183,7 @@ const App = () => {
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-      <Ai />
+      <AiAssistantButton />
     </>
   );
 };

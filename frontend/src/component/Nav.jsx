@@ -41,7 +41,7 @@ const Nav = () => {
     }
   };
   return (
-    <div className="w-[100vw] h-[70px] bg-[#ecfafaec] z-10  top-0 flex items-center justify-between px-[30px] shadow-md shadow-black fixed">
+    <div className="w-[100vw] h-[70px] bg-[#f4fbff] z-10 top-0 flex items-center justify-between px-[30px] border-b border-sky-100 fixed">
       <div className="w-[20%] lg:w-[30%] flex items-center justify-start gap-[10px]">
         <img className="w-[40px] rounded-md" src={Logo} alt="cartLogo" />
         <h1 className="text-[25px] text-[black] font-sans">
@@ -76,11 +76,12 @@ const Nav = () => {
           </li>
         </ul>
       </div>
-      <div className="w-[30%] flex items-center justify-end gap-[20px]">
+      <div className="w-[30%] flex items-center justify-end gap-[14px] md:gap-[22px]">
         {!showSearch && (
           <FaSearch
-            className="w-[29px] h-[29px] text-[#000000] cursor-pointer text-gray-500"
+            className="w-[29px] h-[29px] cursor-pointer text-sky-700 hover:text-sky-900 transition-colors"
             onClick={() => {
+              setShowProfile(false);
               setShowSearch((prev) => !prev);
               navigate("/collections");
             }}
@@ -89,40 +90,46 @@ const Nav = () => {
 
         {showSearch && (
           <FaSearchPlus
-            className="w-[29px] h-[29px] text-[#000000] cursor-pointer text-sky-300"
+            className="w-[29px] h-[29px] cursor-pointer text-orange-500 hover:text-orange-600 transition-colors"
             onClick={() => setShowSearch((prev) => !prev)}
           />
         )}
 
         {!userData && (
           <CgProfile
-            className="w-[30px] h-[30px] text-[#000000] cursor-pointer"
-            onClick={() => setShowProfile((prev) => !prev)}
+            className="w-[30px] h-[30px] text-sky-700 cursor-pointer hover:text-sky-900 transition-colors"
+            onClick={() => {
+              setShowSearch(false);
+              setShowProfile((prev) => !prev);
+            }}
           />
         )}
 
         {userData && (
           <div
-            className="w-[30px] h-[30px] bg-gray-500 text-[white] rounded-full flex items-center justify-center cursor-pointer"
-            onClick={() => setShowProfile((prev) => !prev)}
+            className="w-[32px] h-[32px] bg-sky-100 text-sky-700 rounded-full flex items-center justify-center cursor-pointer font-semibold hover:bg-sky-200 transition-all"
+            onClick={() => {
+              setShowSearch(false);
+              setShowProfile((prev) => !prev);
+            }}
           >
             {userData?.name.slice(0, 1)}
           </div>
         )}
 
         <MdShoppingCart
-          className={`w-[32px] h-[32px] cursor-pointer hidden md:block ${location.pathname === "/cart" ? "text-black bg-slate-300 rounded-md p-[3px]" : "text-gray-500"}`}
+          className={`w-[32px] h-[32px] cursor-pointer hidden md:block ${location.pathname === "/cart" ? "text-sky-900 bg-sky-100 rounded-md p-[3px]" : "text-sky-700 hover:text-sky-900"}`}
           onClick={() => navigate("/cart")}
         />
-        <p className="absolute w-[18px] h-[18px] items-center justify-center px-[7px] py-[2px] bg-black text-white rounded-full text-[9px] top-[11px] right-[25px] hidden md:block">
+        <p className="absolute w-[18px] h-[18px] items-center justify-center px-[7px] py-[2px] bg-orange-500 text-white rounded-full text-[9px] top-[11px] right-[25px] hidden md:block">
           {getCartCount()}
         </p>
       </div>
       {showSearch && (
-        <div className="w-[100%] h-[80px] bg-[#d8f6f9dd] absolute top-[100%] left-0 right-0 flex items-center justify-center">
+        <div className="w-[100%] h-[80px] bg-[#eaf7ff] absolute top-[100%] left-0 right-0 flex items-center justify-center border-b border-sky-100">
           <input
             type="text"
-            className="lg:w-[50%] w-[80%] h-[60%] bg-[#233533] rounded-[30px] px-[50px] placeholder:text-white text-[white] text-[18px]"
+            className="lg:w-[50%] w-[80%] h-[60%] bg-white rounded-[30px] px-[24px] placeholder:text-gray-400 text-gray-800 text-[18px] border border-sky-100 outline-none"
             placeholder="Search Here"
             onChange={(e) => setSearch(e.target.value)}
             value={search}
@@ -131,11 +138,11 @@ const Nav = () => {
       )}
 
       {showProfile && (
-        <div className="absolute w-[220px] h-[150px] top-[110%] right-[4%] border-[1px] border-[#aaa9a9] bg-white rounded-[10px] shadow-2xl z-10">
+        <div className="absolute w-[220px] h-[150px] top-[110%] right-[4%] border border-sky-100 bg-[#fdfefe] rounded-[10px] shadow-lg shadow-sky-100 z-10">
           <ul className="w-[100%] h-[100%] flex items-start justify-around flex-col text-[17px] py-[10px] text-[black]">
             {!userData && (
               <li
-                className="w-[100%] hover:bg-amber-100 px-[15px] py-[10px] cursor-pointer"
+                className="w-[100%] hover:bg-sky-50 px-[15px] py-[10px] cursor-pointer transition-colors"
                 onClick={() => {
                   navigate("/login");
                   setShowProfile(false);
@@ -146,7 +153,7 @@ const Nav = () => {
             )}
             {userData && (
               <li
-                className="w-[100%] hover:bg-amber-100 px-[15px] py-[10px] cursor-pointer hover:rounded-full"
+                className="w-[100%] hover:bg-sky-50 px-[15px] py-[10px] cursor-pointer transition-colors"
                 onClick={() => {
                   handleLogout();
                   setShowProfile(false);
@@ -156,13 +163,13 @@ const Nav = () => {
               </li>
             )}
             <li
-              className="w-[100%] hover:bg-amber-100 px-[15px] py-[10px] cursor-pointer hover:rounded-full"
+              className="w-[100%] hover:bg-sky-50 px-[15px] py-[10px] cursor-pointer transition-colors"
               onClick={() => navigate("/order")}
             >
               Orders
             </li>
             <li
-              className="w-[100%] hover:bg-amber-100 px-[15px] py-[10px] cursor-pointer hover:rounded-full"
+              className="w-[100%] hover:bg-sky-50 px-[15px] py-[10px] cursor-pointer transition-colors"
               onClick={() => navigate("/about")}
             >
               Abouth
@@ -170,36 +177,36 @@ const Nav = () => {
           </ul>
         </div>
       )}
-      <div className="w-[100vw] h-[90px] flex items-center justify-between px-[25px] fixed bottom-0 left-0 bg-gray-200 md:hidden">
-        <button className={`text-black flex items-center justify-center flex-col gap-[2px] cursor-pointer px-[8px] py-[4px] rounded-md ${location.pathname === "/" ? "bg-slate-300" : ""}`}>
+      <div className="w-[100vw] h-[90px] flex items-center justify-between px-[25px] fixed bottom-0 left-0 bg-[#f4fbff] border-t border-sky-100 md:hidden">
+        <button className={`text-sky-700 flex items-center justify-center flex-col gap-[2px] cursor-pointer px-[8px] py-[4px] rounded-md ${location.pathname === "/" ? "bg-sky-100 text-sky-900" : ""}`}>
           <FaHome
-            className="w-[30px] h-[30px] text-[black] md:hidden cursor-pointer"
+            className="w-[30px] h-[30px] md:hidden cursor-pointer"
             onClick={() => navigate("/")}
           />
           Home
         </button>
-        <button className={`text-black flex items-center justify-center flex-col gap-[2px] cursor-pointer px-[8px] py-[4px] rounded-md ${location.pathname === "/collections" ? "bg-slate-300" : ""}`}>
+        <button className={`text-sky-700 flex items-center justify-center flex-col gap-[2px] cursor-pointer px-[8px] py-[4px] rounded-md ${location.pathname === "/collections" ? "bg-sky-100 text-sky-900" : ""}`}>
           <BsFillCollectionFill
-            className="w-[30px] h-[30px] text-black md:hidden cursor-pointer"
+            className="w-[30px] h-[30px] md:hidden cursor-pointer"
             onClick={() => navigate("/collections")}
           />
           Collection
         </button>
-        <button className={`text-black flex items-center justify-center flex-col gap-[2px] cursor-pointer px-[8px] py-[4px] rounded-md ${location.pathname === "/contact" ? "bg-slate-300" : ""}`}>
+        <button className={`text-sky-700 flex items-center justify-center flex-col gap-[2px] cursor-pointer px-[8px] py-[4px] rounded-md ${location.pathname === "/contact" ? "bg-sky-100 text-sky-900" : ""}`}>
           <MdContactPhone
-            className="w-[30px] h-[30px] text-black md:hidden cursor-pointer"
+            className="w-[30px] h-[30px] md:hidden cursor-pointer"
             onClick={() => navigate("/contact")}
           />
           Contact
         </button>
-        <button className={`text-black flex items-center justify-center flex-col gap-[2px] cursor-pointer px-[8px] py-[4px] rounded-md ${location.pathname === "/cart" ? "bg-slate-300" : ""}`}>
+        <button className={`text-sky-700 flex items-center justify-center flex-col gap-[2px] cursor-pointer px-[8px] py-[4px] rounded-md ${location.pathname === "/cart" ? "bg-sky-100 text-sky-900" : ""}`}>
           <MdShoppingCart
-            className="w-[30px] h-[30px] text-black md:hidden cursor-pointer"
+            className="w-[30px] h-[30px] md:hidden cursor-pointer"
             onClick={() => navigate("/cart")}
           />
           Cart
         </button>
-        <p className="absolute w-[18px] h-[18px] flex items-center justify-center bg-white px-[7px] py-[2px] text-black font-semibold rounded-full text-[9px] top-[8px] right-[18px]">
+        <p className="absolute w-[18px] h-[18px] flex items-center justify-center bg-orange-500 text-white rounded-full text-[9px] top-[8px] right-[24px]">
           {getCartCount()}
         </p>
       </div>

@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Orders from "./pages/Orders";
 import { adminDataContext } from "./context/AdminContext";
 import { ToastContainer } from "react-toastify";
+import AiAssistantButton from "./components/AiAssistantButton";
 
 const App = () => {
   let { admindata } = useContext(adminDataContext);
@@ -35,7 +36,8 @@ const App = () => {
             <Route path="/lists" element={<Lists />} />
             <Route path="/Orders" element={<Orders />} />
             <Route path="/login" element={<Login />} />
-          </Routes>{" "}
+          </Routes>
+          <AiAssistantButton />
         </>
       )}
     </>

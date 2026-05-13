@@ -183,9 +183,8 @@ const Orders = () => {
   return (
     <div className="w-[100vw] min-h-[100vh] bg-gray-50 text-gray-800 overflow-x-hidden relative">
       <Nav />
-      <div className="w-[100%] h-[100%] flex items-center lg:justify-start justify-center">
-        <Sidebar />
-        <div className="lg:w-[82%] md:w-[70%] h-[100%] lg:ml-[310px] md:ml-[250px] mt-[70px] flex flex-col gap-[20px] overflow-x-hidden py-[50px] ml-[100px] px-4">
+      <Sidebar />
+      <div className="w-[82%] h-[100%] mt-[70px] flex flex-col gap-[20px] overflow-x-hidden py-[50px] px-4 absolute right-0 md:px-[20px]">
           
           <div className="w-full text-[28px] md:text-[35px] mb-[20px] text-gray-900 font-bold border-b border-gray-200 pb-4">
             All Orders List
@@ -261,7 +260,6 @@ const Orders = () => {
               </div>
             ))
           )}
-        </div>
       </div>
     </div>
   );

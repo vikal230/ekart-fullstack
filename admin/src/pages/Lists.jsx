@@ -5,12 +5,14 @@ import { useState } from "react";
 import { useContext } from "react";
 import { authDataContext } from "../context/AuthContext";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import { toast } from "react-toastify";
 
 const Lists = () => {
   let [list, setList] = useState([]);
   let { serverUrl } = useContext(authDataContext);
+  const navigate = useNavigate();
 
   const fetchList = async () => {
     try {
@@ -49,9 +51,8 @@ const Lists = () => {
   return (
     <div className="w-[100vw] min-h-[100vh] bg-gray-50 text-gray-800 overflow-x-hidden relative">
       <Nav />
-      <div className="w-[100%] h-[100%] flex items-center justify-start">
-        <Sidebar />
-        <div className="w-[82%] h-[100%] lg:ml-[320px] md:ml-[230px] mt-[70px] flex flex-col gap-[20px] overflow-x-hidden py-[50px] ml-[100px] px-4">
+      <Sidebar />
+      <div className="w-[82%] h-[100%] mt-[70px] flex flex-col gap-[20px] overflow-x-hidden py-[50px] px-4 absolute right-0 md:px-[20px]">
           
           <div className="w-full text-[28px] md:text-[35px] mb-[20px] text-gray-900 font-bold border-b border-gray-200 pb-4">
             All Products List
@@ -81,7 +82,13 @@ const Lists = () => {
                   </div>
                 </div>
 
-                <div className="w-[50px] h-full flex items-center justify-center">
+                <div className="flex items-center gap-3 pr-2">
+                  <button
+                    className="px-3 py-1 rounded-lg bg-sky-50 text-sky-700 border border-sky-100 hover:bg-sky-100 transition-all text-[13px] font-medium"
+                    onClick={() => navigate("/add", { state: { product: item } })}
+                  >
+                    Edit
+                  </button>
                   <span
                     className="w-[35px] h-[35px] flex items-center justify-center rounded-full bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-600 cursor-pointer border border-gray-200 transition-all font-bold"
                     onClick={() => removeList(item._id)}
@@ -99,7 +106,6 @@ const Lists = () => {
               </p>
             </div>
           )}
-        </div>
       </div>
     </div>
   );

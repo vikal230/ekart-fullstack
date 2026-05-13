@@ -2,12 +2,12 @@ import React from "react";
 import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar";
 import upload from "../assets/uploadimage.jpg";
-import { useState } from "react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { authDataContext } from "../context/AuthContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Loading from "../components/Loading";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Add = () => {
   const [loading, setLoading] = useState(false)
@@ -23,6 +23,37 @@ const Add = () => {
   const [bestseller, setBestSeller] = useState(false);
   const [sizes, setSizes] = useState([]);
   let { serverUrl } = useContext(authDataContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const editProduct = location.state?.product;
+
+  const getImageSrc = (image) => {
+    if (!image) {
+      return upload;
+    }
+
+    if (typeof image === "string") {
+      return image;
+    }
+
+    return URL.createObjectURL(image);
+  };
+
+  useEffect(() => {
+    if (editProduct) {
+      setName(editProduct.name || "");
+      setdescription(editProduct.description || "");
+      SetPrice(editProduct.price || "");
+      setCategory(editProduct.category || "Men");
+      setSubCategory(editProduct.subCategory || "TopWear");
+      setBestSeller(Boolean(editProduct.bestseller));
+      setSizes(editProduct.sizes || []);
+      setImage1(editProduct.image1 || false);
+      setImage2(editProduct.image2 || false);
+      setImage3(editProduct.image3 || false);
+      setImage4(editProduct.image4 || false);
+    }
+  }, [editProduct]);
 
   const handleAddproduct = async (e) => {
     setLoading(true)
@@ -35,14 +66,22 @@ const Add = () => {
       formData.append("category", category);
       formData.append("subCategory", subCategory);
       formData.append("bestseller", bestseller);
-      formData.append("image1", image1);
-      formData.append("image2", image2);
-      formData.append("image3", image3);
-      formData.append("image4", image4);
+      if (image1 instanceof File) formData.append("image1", image1);
+      else if (image1) formData.append("existingImage1", image1);
+      if (image2 instanceof File) formData.append("image2", image2);
+      else if (image2) formData.append("existingImage2", image2);
+      if (image3 instanceof File) formData.append("image3", image3);
+      else if (image3) formData.append("existingImage3", image3);
+      if (image4 instanceof File) formData.append("image4", image4);
+      else if (image4) formData.append("existingImage4", image4);
       formData.append("sizes", JSON.stringify(sizes));
 
+      const apiUrl = editProduct
+        ? `${serverUrl}/api/product/update/${editProduct._id}`
+        : serverUrl + "/api/product/addproduct";
+
       let result = await axios.post(
-        serverUrl + "/api/product/addproduct",
+        apiUrl,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -50,7 +89,7 @@ const Add = () => {
         },
       );
 
-      toast.success("Add Product Successfully")
+      toast.success(editProduct ? "Product updated successfully" : "Add Product Successfully")
       setLoading(false)
 
       if (result.data) {
@@ -65,11 +104,14 @@ const Add = () => {
         setCategory("Men");
         setSubCategory("TopWear");
         setSizes([]);
+        if (editProduct) {
+          navigate("/lists");
+        }
       }
     } catch (error) {
       console.log("add product error!", error);
       setLoading(false)
-      toast.error("Add Product Failed")
+      toast.error(editProduct ? "Edit Product Failed" : "Add Product Failed")
     }
   };
 
@@ -97,7 +139,7 @@ const Add = () => {
                 return (
                   <label key={index} htmlFor={`image${index + 1}`} className="cursor-pointer">
                     <img
-                      src={!img ? upload : URL.createObjectURL(img)}
+                      src={getImageSrc(img)}
                       alt=""
                       className="w-[70px] h-[70px] md:w-[90px] md:h-[90px] rounded-lg border-2 border-dashed border-gray-300 object-cover hover:border-gray-500 bg-white"
                     />
@@ -218,7 +260,7 @@ const Add = () => {
             type="submit"
             className="w-full md:w-[200px] py-3 rounded-lg bg-gray-900 text-white font-bold hover:bg-black transition-all active:scale-95 shadow-md"
           >
-            {loading ? <Loading /> : "ADD PRODUCT"}
+            {loading ? <Loading /> : editProduct ? "EDIT PRODUCT" : "ADD PRODUCT"}
           </button>
         </form>
       </div>
