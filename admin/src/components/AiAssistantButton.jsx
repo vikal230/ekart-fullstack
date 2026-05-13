@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { FaRobot } from "react-icons/fa";
 import axios from "axios";
 import { authDataContext } from "../context/AuthContext";
+import { adminDataContext } from "../context/AdminContext";
+import { useLocation } from "react-router-dom";
 
 const adminGreetings = [
   "Hello, I am ekart Admin AI. I can help with products, orders, and dashboard questions.",
@@ -16,6 +18,8 @@ const getRandomGreeting = () => {
 
 const AiAssistantButton = () => {
   const { serverUrl } = useContext(authDataContext);
+  const { admindata } = useContext(adminDataContext);
+  const location = useLocation();
   const messagesEndRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -40,6 +44,21 @@ const AiAssistantButton = () => {
     setMessages((prev) => [...prev, { role: "user", text: trimmedMessage }]);
     setShowClearChat(true);
     setMessage("");
+
+    if (!admindata) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          text:
+            location.pathname.toLowerCase() === "/login"
+              ? "Please login first to continue with ekart Admin AI."
+              : "Please login first to access the admin panel AI.",
+        },
+      ]);
+      return;
+    }
+
     setLoading(true);
 
     try {

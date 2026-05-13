@@ -52,7 +52,7 @@ const Lists = () => {
     <div className="w-[100vw] min-h-[100vh] bg-gray-50 text-gray-800 overflow-x-hidden relative">
       <Nav />
       <Sidebar />
-      <div className="w-[82%] h-[100%] mt-[70px] flex flex-col gap-[20px] overflow-x-hidden py-[50px] px-4 absolute right-0 md:px-[20px]">
+      <div className="w-[82%] min-h-[calc(100vh-70px)] mt-[70px] flex flex-col gap-[20px] py-[50px] px-4 absolute right-0 md:px-[20px]">
           
           <div className="w-full text-[28px] md:text-[35px] mb-[20px] text-gray-900 font-bold border-b border-gray-200 pb-4">
             All Products List

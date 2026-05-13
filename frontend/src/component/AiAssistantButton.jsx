@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { FaRobot } from "react-icons/fa";
 import axios from "axios";
 import { authDataContext } from "../context/AuthContext";
+import { userDataContext } from "../context/UserContext";
+import { useLocation } from "react-router-dom";
 
 const assistantGreetings = [
   "Hello, I am ekart AI. How can I help you with products, cart, or orders today?",
@@ -16,8 +18,18 @@ const getRandomGreeting = () => {
   return assistantGreetings[randomIndex];
 };
 
+const getGuestReply = (pathName) => {
+  if (pathName === "/signup") {
+    return "Please register first to continue with ekart AI.";
+  }
+
+  return "Please login first to continue with ekart AI.";
+};
+
 const AiAssistantButton = () => {
   const { serverUrl } = useContext(authDataContext);
+  const { userData } = useContext(userDataContext);
+  const location = useLocation();
   const messagesEndRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -43,6 +55,18 @@ const AiAssistantButton = () => {
     setMessages((prev) => [...prev, userMessage]);
     setShowClearChat(true);
     setMessage("");
+
+    if (!userData) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          text: getGuestReply(location.pathname.toLowerCase()),
+        },
+      ]);
+      return;
+    }
+
     setLoading(true);
 
     try {

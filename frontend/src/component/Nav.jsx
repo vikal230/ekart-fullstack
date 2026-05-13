@@ -32,6 +32,7 @@ const Nav = () => {
         },
       );
       console.log(result.data);
+      sessionStorage.removeItem("ekart-user-session");
       navigate("/login");
       setUserData(null);
       toast.success("Logged out successfully");

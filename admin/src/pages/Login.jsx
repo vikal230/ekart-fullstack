@@ -33,7 +33,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-[100vw] h-[100vh] bg-gray-50 text-gray-800 flex flex-col items-center justify-center p-4">
+    <div className="w-[100vw] h-[100vh] bg-gradient-to-br from-sky-50 via-white to-cyan-50 text-gray-800 flex flex-col items-center justify-center p-4">
       
       {/* Logo Section */}
       <div className="flex items-center gap-2 mb-8 cursor-pointer" onClick={() => navigate("/")}>
@@ -44,10 +44,10 @@ const Login = () => {
       </div>
 
       {/* Login Card */}
-      <div className="max-w-[450px] w-full bg-white border border-gray-200 rounded-2xl shadow-xl p-8 transition-all">
+      <div className="max-w-[450px] w-full bg-white/95 border border-sky-100 rounded-2xl shadow-xl shadow-sky-100/70 p-8 transition-all">
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-900">Admin Login</h2>
-          <p className="text-gray-500 mt-2 text-sm">Welcome back! Please enter your details.</p>
+          <h2 className="text-2xl font-bold text-slate-900">Admin Login</h2>
+          <p className="text-slate-500 mt-2 text-sm">Welcome back! Please enter your details.</p>
         </div>
 
         <form onSubmit={adminLogin} className="flex flex-col gap-5">
@@ -57,7 +57,7 @@ const Login = () => {
             <input
               type="email"
               placeholder="admin@ekart.com"
-              className="w-full h-[50px] border border-gray-300 rounded-lg bg-gray-50 px-4 text-gray-900 outline-none focus:border-gray-900 transition-all shadow-sm"
+              className="w-full h-[50px] border border-slate-200 rounded-lg bg-white px-4 text-gray-900 outline-none focus:border-sky-500 transition-all shadow-sm"
               required
               onChange={(e) => setEmail(e.target.value)}
               value={email}
@@ -70,7 +70,7 @@ const Login = () => {
             <input
               type={show ? "text" : "password"}
               placeholder="••••••••"
-              className="w-full h-[50px] border border-gray-300 rounded-lg bg-gray-50 px-4 text-gray-900 outline-none focus:border-gray-900 transition-all shadow-sm"
+              className="w-full h-[50px] border border-slate-200 rounded-lg bg-white px-4 text-gray-900 outline-none focus:border-sky-500 transition-all shadow-sm"
               required
               onChange={(e) => setPassword(e.target.value)}
               value={password}
@@ -87,7 +87,7 @@ const Login = () => {
           {/* Login Button */}
           <button 
             type="submit"
-            className="w-full h-[50px] bg-gray-900 text-white rounded-lg font-bold text-lg mt-4 hover:bg-black transition-all active:scale-95 shadow-md"
+            className="w-full h-[50px] bg-gradient-to-r from-sky-500 to-cyan-500 text-white rounded-lg font-bold text-lg mt-4 hover:opacity-95 transition-all active:scale-95 shadow-md"
           >
             Login to Dashboard
           </button>

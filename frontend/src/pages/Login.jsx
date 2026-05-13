@@ -11,6 +11,7 @@ import axios from "axios";
 import { userDataContext } from "../context/UserContext";
 import { toast } from "react-toastify";
 
+const isValidEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -23,19 +24,41 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    if (!trimmedEmail || !trimmedPassword) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    if (!isValidEmail(trimmedEmail)) {
+      toast.error("Please enter a valid email");
+      return;
+    }
+
     try {
       let result = await axios.post(
         serverUrl + "/api/auth/login",
-        { email, password },
+        { email: trimmedEmail, password: trimmedPassword },
         { withCredentials: true },
       );
       console.log(result.data);
       await getCurrentUser();
-      toast.success("Welcome back to ekart");
+      toast.success("Login successful. Welcome back to ekart. Enjoy shopping.");
       navigate("/");
     } catch (error) {
       console.log(error);
-      toast.error("Login failed");
+      const message = error?.response?.data?.message?.toLowerCase() || "";
+
+      if (message.includes("incorrect")) {
+        toast.error("Wrong password. Please enter the correct password");
+      } else if (message.includes("exist") || message.includes("email") || error?.response?.status === 404) {
+        toast.error("Please enter the right email");
+      } else {
+        toast.error("Login failed");
+      }
     }
   };
 
@@ -53,7 +76,7 @@ const Login = () => {
       );
       console.log(result.data);
       await getCurrentUser();
-      toast.success("Google login successful");
+      toast.success("Google login successful. Welcome back to ekart.");
       navigate("/");
     } catch (error) {
       console.log("error hai", error);
@@ -62,7 +85,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-[100vw] h-[100vh] bg-gray-50 text-gray-800 flex flex-col items-center justify-start">
+    <div className="w-[100vw] h-[100vh] bg-gradient-to-br from-sky-50 via-white to-amber-50 text-gray-800 flex flex-col items-center justify-start">
       
       {/* Header/Logo Section */}
       <div
@@ -77,18 +100,19 @@ const Login = () => {
 
       {/* Welcome Text */}
       <div className="w-[100%] h-[120px] flex items-center justify-center flex-col gap-[5px] mt-4">
-        <h2 className="text-[28px] md:text-[32px] font-bold text-gray-900">Welcome Back</h2>
-        <p className="text-gray-500 text-[15px]">Login to your ekart account to continue</p>
+        <h2 className="text-[28px] md:text-[32px] font-bold text-slate-900">Welcome Back</h2>
+        <p className="text-slate-500 text-[15px]">Login to your ekart account to continue</p>
       </div>
 
       {/* Login Card */}
-      <div className="max-w-[500px] w-[90%] bg-white border border-gray-200 rounded-2xl shadow-xl p-8 transition-all">
+      <div className="max-w-[500px] w-[90%] bg-white/95 border border-sky-100 rounded-2xl shadow-xl shadow-sky-100/70 p-8 transition-all">
         <form
           onSubmit={handleLogin}
+          noValidate
           className="w-full flex flex-col items-center justify-start gap-[20px]"
         >
           <div
-            className="w-full h-[50px] bg-white border border-gray-300 rounded-lg flex items-center justify-center gap-[12px] cursor-pointer hover:bg-gray-50 transition-all font-semibold shadow-sm"
+            className="w-full h-[50px] bg-sky-50 border border-sky-100 rounded-lg flex items-center justify-center gap-[12px] cursor-pointer hover:bg-sky-100 transition-all font-semibold shadow-sm"
             onClick={googleLogin}
           >
             <img
@@ -111,8 +135,7 @@ const Login = () => {
             <input
               type="email"
               placeholder="Email Address"
-              className="w-full h-[50px] border border-gray-300 rounded-lg bg-gray-50 px-[20px] text-gray-900 placeholder-gray-400 outline-none focus:border-gray-900 transition-all font-medium"
-              required
+              className="w-full h-[50px] border border-slate-200 rounded-lg bg-white px-[20px] text-gray-900 placeholder-gray-400 outline-none focus:border-orange-400 transition-all font-medium"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
@@ -121,8 +144,7 @@ const Login = () => {
               <input
                 type={show ? "text" : "password"}
                 placeholder="Password"
-                className="w-full h-[50px] border border-gray-300 rounded-lg bg-gray-50 px-[20px] text-gray-900 placeholder-gray-400 outline-none focus:border-gray-900 transition-all font-medium"
-                required
+                className="w-full h-[50px] border border-slate-200 rounded-lg bg-white px-[20px] text-gray-900 placeholder-gray-400 outline-none focus:border-orange-400 transition-all font-medium"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
               />
@@ -136,7 +158,7 @@ const Login = () => {
             </div>
 
             {/* Login Button */}
-            <button className="w-full h-[50px] bg-gray-900 text-white rounded-lg flex items-center justify-center mt-2 text-[16px] font-bold hover:bg-black transition-all shadow-md active:scale-95">
+            <button className="w-full h-[50px] bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-lg flex items-center justify-center mt-2 text-[16px] font-bold hover:opacity-95 transition-all shadow-md active:scale-95">
               Login to Account
             </button>
 

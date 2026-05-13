@@ -17,40 +17,68 @@ import AiAssistantButton from "./component/AiAssistantButton";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const toastContainerProps = {
+  position: "bottom-right",
+  autoClose: 3000,
+  hideProgressBar: false,
+  newestOnTop: false,
+  closeOnClick: true,
+  rtl: false,
+  pauseOnFocusLoss: true,
+  draggable: true,
+  pauseOnHover: true,
+  theme: "light",
+  toastStyle: {
+    background: "#ffffff",
+    color: "#0f172a",
+    border: "1px solid #dbeafe",
+    borderRadius: "14px",
+    boxShadow: "0 14px 32px rgba(14, 165, 233, 0.12)",
+    fontSize: "14px",
+    fontWeight: "500",
+    minHeight: "58px",
+  },
+};
+
 const App = () => {
   let { userData, isCheckingAuth } = useContext(userDataContext);
   let location = useLocation();
   const pathName = location.pathname.toLowerCase();
-  const isPublicPage = ["/login", "/signup"].includes(pathName);
+  const hasSessionHint =
+    typeof window !== "undefined" &&
+    sessionStorage.getItem("ekart-user-session") === "true";
   const loadingTextMap = {
     "/login": "Loading Login...",
-    "/signup": "Loading Sign Up...",
+    "/signup": "Loading Register...",
     "/": "Loading Home...",
+    "/about": "Loading About...",
+    "/collections": "Loading Collections...",
+    "/contact": "Loading Contact...",
+    "/cart": "Loading Cart...",
+    "/placeorder": "Loading Place Order...",
+    "/order": "Loading Order...",
   };
-  const loadingText = isPublicPage
-    ? loadingTextMap[pathName]
-    : pathName === "/"
-      ? "Loading Home..."
-      : pathName.startsWith("/productdetails/")
-        ? "Loading Product Details..."
-        : loadingTextMap[pathName] || "Loading Page...";
+  const getLoadingText = () => {
+    if (pathName === "/login" || pathName === "/signup") {
+      return loadingTextMap[pathName];
+    }
+
+    if (!hasSessionHint) {
+      return "Loading Login...";
+    }
+
+    if (pathName.startsWith("/productdetails/")) {
+      return "Loading Product Details...";
+    }
+
+    return loadingTextMap[pathName] || "Loading Page...";
+  };
+  const loadingText = getLoadingText();
 
   if (isCheckingAuth) {
     return (
       <>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          toastStyle={{ background: "#111827", color: "#fff" }}
-        />
+        <ToastContainer {...toastContainerProps} />
         <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-gray-50">
           <div className="flex flex-col items-center gap-4">
             <div className="w-12 h-12 rounded-full border-4 border-gray-200 border-t-gray-900 animate-spin"></div>
@@ -63,19 +91,7 @@ const App = () => {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-        toastStyle={{ background: "#111827", color: "#fff" }}
-      />
+      <ToastContainer {...toastContainerProps} />
       {userData && <Nav />}
       <Routes>
         <Route

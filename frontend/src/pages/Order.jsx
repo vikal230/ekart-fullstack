@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { shopDataContext } from "../context/ShopContext";
 import { authDataContext } from "../context/AuthContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Order = () => {
   let [orderData, setOrderData] = useState([]);
@@ -21,13 +22,16 @@ const Order = () => {
 
       if (result.data) {
         let allOrdersItem = [];
-        result.data.map((order) => {
-          order.items.map((item) => {
-            item["status"] = order.status;
-            item["payment"] = order.payment;
-            item["paymentMethod"] = order.paymentMethod;
-            item["date"] = order.date;
-            allOrdersItem.push(item);
+        result.data.forEach((order) => {
+          order.items.forEach((item) => {
+            allOrdersItem.push({
+              ...item,
+              orderId: order._id,
+              status: order.status,
+              payment: order.payment,
+              paymentMethod: order.paymentMethod,
+              date: order.date,
+            });
           });
         });
         setOrderData(allOrdersItem.reverse());
@@ -40,6 +44,32 @@ const Order = () => {
   useEffect(() => {
     loadOrderData();
   }, []);
+
+  const isFailedStatus = (status) =>
+    status === "Order Failed" || status === "Cancelled" || status === "Removed by Admin";
+
+  const deleteOrderHandler = async (orderId) => {
+    if (!orderId) {
+      toast.error("Order id not found");
+      return;
+    }
+
+    try {
+      const result = await axios.post(
+        `${serverUrl}/api/order/delete/${orderId}`,
+        {},
+        { withCredentials: true },
+      );
+
+      if (result.data) {
+        await loadOrderData();
+        toast.success("Order removed successfully");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to delete order");
+    }
+  };
 
   return (
     <div className="w-[100vw] min-h-[100vh] p-[20px] pb-[150px] overflow-x-hidden bg-gray-50 mt-[80px]">
@@ -93,7 +123,9 @@ const Order = () => {
               <div className="w-full md:w-auto flex flex-row md:flex-col items-center justify-between md:justify-center gap-4 mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
                 
                 <div className="flex items-center gap-2">
-                  <p className="w-2.5 h-2.5 rounded-full bg-green-500"></p>
+                  <p
+                    className={`w-2.5 h-2.5 rounded-full ${isFailedStatus(item.status) ? "bg-red-500" : "bg-green-500"}`}
+                  ></p>
                   <p className="text-[14px] md:text-[16px] text-gray-700 font-medium">
                     {item.status}
                   </p>
@@ -104,6 +136,12 @@ const Order = () => {
                   onClick={loadOrderData}
                 >
                   Track Order
+                </button>
+                <button
+                  className="px-5 py-2 md:py-2.5 rounded-md bg-slate-700 text-white text-[14px] md:text-[15px] font-medium hover:bg-slate-800 transition-all shadow-sm"
+                  onClick={() => deleteOrderHandler(item.orderId)}
+                >
+                  Delete Order
                 </button>
               </div>
 

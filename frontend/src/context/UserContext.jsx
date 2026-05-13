@@ -5,6 +5,7 @@ import axios from "axios";
 
 
 export const userDataContext = createContext();
+const SESSION_HINT_KEY = "ekart-user-session";
 
 const UserContext =  ({ children }) => {
   let [userData, setUserData] = useState("");
@@ -18,9 +19,11 @@ const UserContext =  ({ children }) => {
         withCredentials: true,
       });
       setUserData(result.data);
+      sessionStorage.setItem(SESSION_HINT_KEY, "true");
       // console.log(result.data);
     } catch (error) {
       setUserData(null);
+      sessionStorage.removeItem(SESSION_HINT_KEY);
       console.log("error hai!", error)
     } finally {
       setIsCheckingAuth(false);

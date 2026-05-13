@@ -36,11 +36,37 @@ export const placeOrder = async (req, res) => {
 export const userOrder = async (req, res) => {
   try {
     const userId = req.userId;
-    const orders = await Order.find({ userId });
+    const orders = await Order.find({
+      userId,
+      status: { $ne: "Cancelled by User" },
+    });
     return res.status(200).json(orders);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "userorder error" });
+  }
+};
+
+export const deleteUserOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.userId;
+
+    const order = await Order.findById(id);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (String(order.userId) !== String(userId)) {
+      return res.status(403).json({ message: "You can delete only your own order" });
+    }
+
+    await Order.findByIdAndUpdate(order._id, { status: "Cancelled by User" });
+    return res.status(200).json({ message: "Order removed from your list" });
+  } catch (error) {
+    console.log("delete user order error", error);
+    return res.status(500).json({ message: "Failed to delete order" });
   }
 };
 
@@ -61,6 +87,17 @@ export const updateStatus = async (req, res) => {
 
     await Order.findByIdAndUpdate(orderId, { status });
     return res.status(201).json({ message: "Status Updated" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const cancelOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await Order.findByIdAndUpdate(id, { status: "Order Failed" });
+    return res.status(200).json({ message: "Order marked as failed" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

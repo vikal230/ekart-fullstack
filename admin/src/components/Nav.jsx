@@ -13,6 +13,7 @@ const Nav = () => {
     try {
       let result = await axios.post(serverUrl + "/api/auth/logout",  {withCredentials: true})
       console.log(result.data)
+      sessionStorage.removeItem("ekart-admin-session");
       getAdmin()
       toast.success("Admin logged out successfully");
       navigate("/login")
