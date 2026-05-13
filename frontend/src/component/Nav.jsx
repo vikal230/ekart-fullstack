@@ -137,7 +137,7 @@ const Nav = () => {
               <li
                 className="w-[100%] hover:bg-amber-100 px-[15px] py-[10px] cursor-pointer"
                 onClick={() => {
-                  navigate("login");
+                  navigate("/login");
                   setShowProfile(false);
                 }}
               >

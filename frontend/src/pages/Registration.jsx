@@ -155,7 +155,7 @@ const Registration = () => {
               Already have an account?{" "}
               <span
                 className="text-blue-600 font-bold cursor-pointer hover:underline"
-                onClick={() => navigate("/Login")}
+                onClick={() => navigate("/login")}
               >
                 Login here
               </span>

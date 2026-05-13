@@ -29,8 +29,8 @@ const App = () => {
   };
   const loadingText = isPublicPage
     ? loadingTextMap[pathName]
-    : !userData && pathName === "/"
-      ? "Loading Login..."
+    : pathName === "/"
+      ? "Loading Home..."
       : pathName.startsWith("/productdetails/")
         ? "Loading Product Details..."
         : loadingTextMap[pathName] || "Loading Page...";
@@ -79,7 +79,7 @@ const App = () => {
       {userData && <Nav />}
       <Routes>
         <Route
-          path="/Login"
+          path="/login"
           element={
             userData ? <Navigate to={location.state?.from || "/"} /> : <Login />
           }
