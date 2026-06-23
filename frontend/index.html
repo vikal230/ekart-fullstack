@@ -7,7 +7,12 @@
     <title>ekart</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+  <div style="min-height:100vh;background:#fff;display:flex;align-items:center;justify-content:center;">
+    <div style="width:32px;height:32px;border:2.5px solid #fed7aa;border-top-color:#f97316;border-radius:50%;animation:spin 0.7s linear infinite;"></div>
+    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+  </div>
+</div>
     <script type="module" src="/src/main.jsx"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   </body>

@@ -1,30 +1,30 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { authDataContext } from "./AuthContext";
 import axios from "axios";
-// import { Navigate } from "react-router-dom";
-
 
 export const userDataContext = createContext();
 const SESSION_HINT_KEY = "ekart-user-session";
 
-const UserContext =  ({ children }) => {
+const UserContext = ({ children }) => {
+  const publicPaths = ["/login", "/signup"];
+  const isPublic = publicPaths.includes(window.location.pathname.toLowerCase());
+  
   let [userData, setUserData] = useState("");
-  let [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  let [isCheckingAuth, setIsCheckingAuth] = useState(!isPublic);
   let { serverUrl } = useContext(authDataContext);
 
   const getCurrentUser = async () => {
-    setIsCheckingAuth(true);
+    setIsCheckingAuth(!isPublic);
     try {
       let result = await axios.post(serverUrl + "/api/user/getCurrentUser", {}, {
         withCredentials: true,
       });
       setUserData(result.data);
       sessionStorage.setItem(SESSION_HINT_KEY, "true");
-      // console.log(result.data);
     } catch (error) {
       setUserData(null);
       sessionStorage.removeItem(SESSION_HINT_KEY);
-      console.log("error hai!", error)
+      console.log("error hai!", error);
     } finally {
       setIsCheckingAuth(false);
     }
@@ -40,6 +40,7 @@ const UserContext =  ({ children }) => {
     getCurrentUser,
     isCheckingAuth,
   };
+
   return (
     <userDataContext.Provider value={value}>
       {children}
